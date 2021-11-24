@@ -19,9 +19,36 @@ class ViewController: UIViewController {
         fetchPeople()
     }
     
+    func relationShipDemo() {
+        // Create a family
+        var family = Family(context: context)
+        
+        family.name = "Abc Family"
+        // Create a Person
+        
+        var person = Person(context: context)
+        // Add person to family
+        
+        person.name = "Maggie"
+        person.family = family
+        
+        // Save Context
+        try! context.save()
+        
+        
+        
+        
+    }
+    
     func fetchPeople() {
+        // Fetch the data from Core Data to display in the tableView
         do {
-            self.items = try context.fetch(Person.fetchRequest())
+            let request = Person.fetchRequest() as NSFetchRequest<Person>
+            
+            let sort = NSSortDescriptor(key: "name", ascending: true)
+            request.sortDescriptors = [sort]
+            
+            self.items = try context.fetch(request)
             DispatchQueue.main.async {
                 self.itemTableView.reloadData()
             }
