@@ -21,7 +21,14 @@ class ViewController: UIViewController {
     
     func fetchPeople() {
         do {
-            self.items = try context.fetch(Person.fetchRequest())
+            let request = Person.fetchRequest() as NSFetchRequest<Person>
+            
+            
+            let pred = NSPredicate(format: "name CONTAINS 'S'") //%@ Dynamic
+            request.predicate = pred
+            
+            self.items = try context.fetch(request)
+            
             DispatchQueue.main.async {
                 self.itemTableView.reloadData()
             }
